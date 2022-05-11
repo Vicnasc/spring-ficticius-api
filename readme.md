@@ -11,12 +11,6 @@ de melhoria ao fim deste texto.
 - Clone o projeto em uma pasta com o comando
   `git clone <url do repositório>.git`
 
-- Instale o [Gradle](https://gradle.org/install/) caso não tenha já para realizar a build local do projeto 
-
-- Utilize o Gradle para realizar a build com o comando `gradle build` nas pastas
-  de cada uma das APIs. É importante, pois o docker-compose irá utilizar a pasta
-  bin para executar o projeto no container.
-
 - Após as respectivas builds, executar dentro do terminal na pasta de origem do
   arquivo docker-compose o comando `docker-compose up -d`
 

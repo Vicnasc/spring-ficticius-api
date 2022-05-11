@@ -1,7 +1,5 @@
 version: '3.6'
 
-name: ficticius
-
 services:
   postgres:
     container_name: postgres
@@ -13,19 +11,19 @@ services:
     restart: on-failure
     volumes:
       - ./volumes/postgresql:/var/lib/postgresql/data:z
-    ports: [5432:5432]
-    networks: [ficticius]
+    ports: ['5432:5432']
+    networks: ['ficticius']
 
   cars-api:
     container_name: cars-api
     image: alpine:latest
     working_dir: /usr/app
-    ports: [8080:8080]
-    volumes: [./cars-api/build/libs:/usr/app]
+    ports: ['8080:8080']
+    volumes: [./cars-api:/usr/app]
     entrypoint: 
       - sh
       - -c
-      - apk add openjdk11 && chmod +x . && java -jar /usr/app/cars-api-0.0.1-SNAPSHOT.jar
+      - apk add openjdk11 ca-certificates gradle && chmod +x . && gradle build && java -jar /usr/app/build/libs/cars-api-0.0.1-SNAPSHOT.jar
     depends_on: [postgres]
     environment:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/totvs
@@ -41,12 +39,12 @@ services:
     container_name: consumption-api
     image: alpine:latest
     working_dir: /usr/app
-    ports: [8081:8081]
-    volumes: [./consumption-api/build/libs:/usr/app]
+    ports: ['8081:8081']
+    volumes: [./consumption-api:/usr/app]
     entrypoint: 
       - sh
       - -c
-      - apk add openjdk11 && chmod +x . && java -jar /usr/app/consumption-api-0.0.1-SNAPSHOT.jar
+      - apk add openjdk11 ca-certificates gradle && chmod +x . && gradle build && java -jar /usr/app/build/libs/consumption-api-0.0.1-SNAPSHOT.jar
     depends_on: [postgres]
     environment:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/totvs
@@ -57,7 +55,7 @@ services:
       - logging.level.root=ERROR
       - logging.file.path=logs
       - service.url=http://cars-api:8080/api/v1
-    networks: [ficticius]
+    networks: ['ficticius']
 
 networks:
   ficticius:
