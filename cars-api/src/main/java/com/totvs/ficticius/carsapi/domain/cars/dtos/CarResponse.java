@@ -8,10 +8,10 @@ public class CarResponse {
     private final Long id;
     private final String nome;
     private final String marca;
-    private final Integer fabricacao;
-    private final Double consumoCidade;
-    private final Double consumoRodovia;
     private final String modelo;
+    private final int fabricacao;
+    private final double consumoCidade;
+    private final double consumoRodovia;
 
     public CarResponse(Car car) {
         this.id = car.getId();

@@ -9,7 +9,7 @@ public class CarDTO {
     private String nome;
     private String marca;
     private String modelo;
-    private Integer fabricacao;
-    private Double consumoCidade;
-    private Double consumoRodovia;
+    private int fabricacao;
+    private double consumoCidade;
+    private double consumoRodovia;
 }

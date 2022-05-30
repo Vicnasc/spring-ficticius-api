@@ -16,20 +16,20 @@ public class Car {
     @Id
     @Column
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private long id;
 
     @ManyToOne(targetEntity = CarModel.class, cascade = CascadeType.ALL)
     @JoinColumn
     private CarModel modelo;
 
     @Column
-    private Integer fabricacao;
+    private int fabricacao;
 
     @Column
-    private Double consumoCidade;
+    private double consumoCidade;
 
     @Column
-    private Double consumoRodovia;
+    private double consumoRodovia;
 
     @CreatedDate
     private LocalDateTime created_at;

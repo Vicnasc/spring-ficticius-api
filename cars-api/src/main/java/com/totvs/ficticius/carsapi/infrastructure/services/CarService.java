@@ -43,7 +43,6 @@ public class CarService implements ICarService {
 
         for (Car dbCar : cars) {
             Car car = carRepository.findById(dbCar.getId()).orElse(null);
-
             if (Objects.nonNull(car)) carResponses.add(new CarResponse(car));
         }
 
