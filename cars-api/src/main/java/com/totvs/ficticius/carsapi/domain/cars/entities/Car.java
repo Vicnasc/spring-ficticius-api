@@ -1,7 +1,7 @@
 package com.totvs.ficticius.carsapi.domain.cars.entities;
 
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import lombok.Data;
+import lombok.Getter;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "cars")
 @JsonPropertyOrder("id")
-@Data
+@Getter
 public class Car {
     @Id
     @Column

@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Objects;
 
 @Tag(name = "Cars", description = "Endpoint to insert new cars")
 @RestController
@@ -35,8 +36,11 @@ public class CarController {
             List<CarResponse> carsList = carService.listALlCars();
             logger.info("Cars fetch with SUCCESS");
 
-            response.setData(carsList.toArray());
-            response.setItemsPerPage(carsList.size());
+            if (carsList.size() > 0) {
+                response.setData(carsList.toArray());
+                response.setItemsPerPage(carsList.size());
+            }
+
             return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (SQLException e) {
             logger.error("Fetch ERROR: ".concat(e.getMessage()));
@@ -44,6 +48,7 @@ public class CarController {
             response.setStatusCode(400);
             response.setErrors(new Object[]{e.getMessage()});
             response.setMessage("error");
+
             return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
         } catch (Exception e) {
             logger.error("Unexpected ERROR: ".concat(e.getMessage()));
@@ -51,6 +56,7 @@ public class CarController {
             response.setStatusCode(500);
             response.setErrors(new Object[]{e.getMessage()});
             response.setMessage("error");
+
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -64,7 +70,8 @@ public class CarController {
             CarResponse car = carService.listCarById(id);
             logger.trace("Cars fetch with SUCCESS");
 
-            response.setData(new CarResponse[]{car});
+            if (Objects.nonNull(car)) response.setData(new CarResponse[]{car});
+
             return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (CarNotFoundException e) {
             logger.error(e.getClass().getSimpleName().concat(e.getMessage()));
@@ -72,6 +79,7 @@ public class CarController {
             response.setStatusCode(404);
             response.setErrors(new Object[]{e.getMessage()});
             response.setMessage("error");
+
             return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
         } catch (SQLException e) {
             logger.error(e.getClass().getSimpleName().concat(e.getMessage()));
@@ -79,6 +87,7 @@ public class CarController {
             response.setStatusCode(400);
             response.setErrors(new Object[]{e.getMessage()});
             response.setMessage("error");
+
             return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
         } catch (Exception e) {
             logger.error(e.getClass().getSimpleName().concat(e.getMessage()));
@@ -86,6 +95,7 @@ public class CarController {
             response.setStatusCode(500);
             response.setErrors(new Object[]{e.getMessage()});
             response.setMessage("error");
+
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -101,18 +111,21 @@ public class CarController {
 
             response.setData(new CarResponse[]{newCar});
             response.setStatusCode(201);
+
             return new ResponseEntity<>(response, HttpStatus.CREATED);
         } catch (SQLException e) {
             logger.error("Fetch ERROR: ".concat(e.getMessage()));
 
             response.setStatusCode(400);
             response.setErrors(new Object[]{e.getMessage()});
+
             return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
         } catch (Exception e) {
             logger.error("Unexpected ERROR: ".concat(e.getMessage()));
 
             response.setStatusCode(500);
             response.setErrors(new Object[]{e.getMessage()});
+
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

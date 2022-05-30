@@ -1,6 +1,6 @@
 package com.totvs.ficticius.carsapi.domain.cars.entities;
 
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "brands")
-@Data
+@Getter
 @NoArgsConstructor
 public class CarBrand {
     @Id
@@ -20,7 +20,7 @@ public class CarBrand {
 
     @Column
     private String brand_name;
-    
+
     @CreatedDate
     private LocalDateTime created_at;
 

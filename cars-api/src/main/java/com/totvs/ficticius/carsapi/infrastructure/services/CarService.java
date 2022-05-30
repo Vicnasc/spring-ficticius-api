@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class CarService implements ICarService {
@@ -42,11 +43,8 @@ public class CarService implements ICarService {
 
         for (Car dbCar : cars) {
             Car car = carRepository.findById(dbCar.getId()).orElse(null);
-            CarModel carModel = modelRepository.findById(car.getModelo().getCar_model_id()).orElse(null);
-            CarName carName = nameRepository.findById(carModel.getCar_model_car_name().getCar_name_id()).orElse(null);
-            CarBrand carBrand = brandRepository.findById(carName.getCar_name_brand().getBrand_id()).orElse(null);
 
-            carResponses.add(new CarResponse(car.getId(), carName.getCar_name_name(), carBrand.getBrand_name(), carModel.getCar_model_name(), car.getFabricacao(), car.getConsumoCidade(), car.getConsumoRodovia()));
+            if (Objects.nonNull(car)) carResponses.add(new CarResponse(car));
         }
 
         return carResponses;
@@ -55,11 +53,7 @@ public class CarService implements ICarService {
     @Override
     public CarResponse listCarById(Long id) throws IllegalArgumentException {
         Car car = carRepository.findById(id).orElse(null);
-        CarModel carModel = modelRepository.findById(car.getModelo().getCar_model_id()).orElse(null);
-        CarName carName = nameRepository.findById(carModel.getCar_model_car_name().getCar_name_id()).orElse(null);
-        CarBrand carBrand = brandRepository.findById(carName.getCar_name_brand().getBrand_id()).orElse(null);
-
-        return new CarResponse(car.getId(), carName.getCar_name_name(), carBrand.getBrand_name(), carModel.getCar_model_name(), car.getFabricacao(), car.getConsumoCidade(), car.getConsumoRodovia());
+        return Objects.isNull(car) ? null : new CarResponse(car);
     }
 
     @Override
@@ -76,14 +70,6 @@ public class CarService implements ICarService {
         Car car = new Car(savedModel, carDTO.getFabricacao(), carDTO.getConsumoCidade(), carDTO.getConsumoRodovia());
         Car savedCar = carRepository.save(car);
 
-        return new CarResponse(
-                savedCar.getId(),
-                savedCarName.getCar_name_name(),
-                savedBrand.getBrand_name(),
-                savedModel.getCar_model_name(),
-                savedCar.getFabricacao(),
-                savedCar.getConsumoCidade(),
-                savedCar.getConsumoRodovia()
-        );
+        return new CarResponse(savedCar);
     }
 }
